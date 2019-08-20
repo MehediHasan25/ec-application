@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import {Link} from "react-router-dom";
 
-class Login extends Component {
+class superLogin extends Component {
     state = { 
-        username: "",
-        usernameValidation: false,
-        password: "",
-        passwordValidation: false
+        username:'',
+        password:''
      }
 
      UNSAFE_componentWillMount() {
-        document.title = 'Login';
+        document.title = 'Admin Login';
     }
 
 
@@ -21,68 +19,21 @@ class Login extends Component {
 
         console.log(username);
         console.log(password);
-////////////////////// Axios part////////////////////////////////
-        // const obj = {
-        //     username,
-        //     password
-        // }
-
-        // axios.post(login, obj)
-        // .then(res => {
-        //     // console.log(res);
-        //     // console.log(res.headers['x-auth-token']);
-
-        //     let token = res.headers['x-auth-token'];
-        //     cookie.setCookie('x-auth-token', token, 120);
-        //     cookie.setCookie('username', username, 120);
-        //     if (res.data.userStatus === "new") {
-        //         this.props.history.replace('/greetings');
-        //     } else {
-        //         this.props.history.replace('/dashboard');
-        //     }
-        // })
-        // .catch(err => {
-           
-        //     if (err.response) {
-        //         if (err.response.status === 400 || err.response.status === 401) {
-        //             console.log(err.response.data);
-        //             alert(err.response.data.message);
-        //            //alert("Mehedi will occur error");
-        //         }
-        //         else if (err.response.status === 404) {
-        //             alert("Not Found");
-        //         }
-        //         else if (err.response.status === 500) {
-        //             alert(err.response.data.message);
-        //         }
-        //     }
-        //     else if(err.request){
-        //         console.log(err.request);
-        //         alert("Error Connectiong");
-        //     }
-        //     else{
-        //         console.log("Error", err.message);
-        //         alert(err.message);
-        //     }
-        // });
+        this.props.history.replace('/create-user');
+    }
 
 
-////////////////////// Axios part////////////////////////////////
-
-    } 
-
-    onChangeUserName = e => {
+    onChangeSuperUserName = e => {
         this.setState({ username: e.target.value, usernameValidation: false });
     }
-    onChangePassword = e => {
+    onChangeSuperPassword = e => {
         this.setState({ password: e.target.value, passwordValidation: false });
     }
 
-
     render() { 
-        return ( 
+        return (
             <div>
-                <nav className="navbar fixed-top navbar-expand-md navbar-light shadow" style={{ backgroundColor: "#56c9ef" }}>
+                <nav className="navbar fixed-top navbar-expand-md navbar-light shadow" style={{ backgroundColor: "#3ed6a6" }}>
                     <div className="container">
                         <div className="navbar-header">
                             <button type="button" className="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
@@ -90,7 +41,7 @@ class Login extends Component {
                             </button>
                             <Link className="navbar-brand" to="#" style={{ color: "#ffffff" }}>
                                 <i className="fas fa-user-cog"></i>&nbsp;
-                            User</Link>
+                                AdminStrap</Link>
                         </div>
                         <div id="navbar" className="collapse navbar-collapse">
 
@@ -98,7 +49,7 @@ class Login extends Component {
                     </div>
                 </nav>
 
-                <br/><br/>
+              
                 <header id="header">
                     <div className="container">
                         <div className="row">
@@ -107,7 +58,7 @@ class Login extends Component {
                                     <div className="panel-body text-center pt-5">
                                         <h4 style={{ color: "#72726f" }}>
                                             <i className="fas fa-user-shield"></i>&nbsp;
-                                        Account Login</h4>
+                                            Account Login</h4>
 
                                     </div>
                                 </div>
@@ -129,10 +80,10 @@ class Login extends Component {
 
 
 
-                                <input type="text" id="defaultLoginFormNumber" onChange={this.onChangeUserName} className="form-control mb-4 border border-primary" placeholder="User ID" style={{ height: "50px" }}></input>
+                                <input type="text" id="defaultLoginFormNumber" onChange={this.onChangeSuperUserName} className="form-control mb-4 border border-primary" placeholder="User ID" style={{ height: "50px" }}></input>
 
 
-                                <input type="password" id="defaultLoginFormPassword" onChange={this.onChangePassword} className="form-control mb-4 border border-primary" placeholder="Password" style={{ height: "50px" }}></input>
+                                <input type="password" id="defaultLoginFormPassword" onChange={this.onChangeSuperPassword} className="form-control mb-4 border border-primary" placeholder="Password" style={{ height: "50px" }}></input>
 
                                 <div className="d-flex align-items-center justify-content-between">
                                     <div>
@@ -144,12 +95,12 @@ class Login extends Component {
                                     </div>
                                     <div>
 
-                                        <Link to="" style={{ color: "#56c9ef" }}>Forgot password?</Link>
+                                        <Link to="" style={{ color: "#3ed6a6" }}>Forgot password?</Link>
                                     </div>
                                 </div>
 
 
-                                <button className="btn btn-info btn-block my-4" type="submit" style={{ backgroundColor: "#56c9ef" }}>Login</button>
+                                <button className="btn btn-info btn-block my-4" type="submit" style={{ backgroundColor: "#3ed6a6" }}>Login</button>
 
 
 
@@ -158,9 +109,13 @@ class Login extends Component {
                     </div>
                 </section>
 
+
+
+
+
             </div>
-         );
+          );
     }
 }
  
-export default Login;
+export default superLogin;

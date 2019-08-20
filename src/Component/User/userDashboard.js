@@ -1,0 +1,60 @@
+import React, { Component } from 'react';
+
+class UserDashboard extends Component {
+    state = { 
+        nidNo:"",
+        nidNoValidation: false,
+        name:"",
+        nameValidation: false,
+        dob:"",
+        dobValidation:false,
+        fatherName: "",
+        fatherNameValidation:false,
+        motherName:"",
+        motherNameValidation:false,
+        pob:"",
+        pobValidation: false,
+        bloodGroup: "",
+        bloodGroupValidation: false,
+        issueDate: "",
+        issueDateValidtion: false,
+        address: "",
+        addressValidation: false,
+        rIndex: "",
+        rIndexValidation: false,
+        rThumb:"",
+        rThumbValidation: false,
+        rMiddle:"",
+        rMiddleValidation: false,
+        rRing:"",
+        rRingValidation: false,
+        rLittle: "",
+        rLittleValidation: false,
+        lIndex:"",
+        lIndexValidation: false,
+        lThumb: "",
+        lThumbValidation: false,
+        lMiddle:"",
+        lMiddleValidation: false,
+        lRing:"",
+        lRingValidation: false,
+        lLittle:"",
+        lLittleValidation: false,
+        ecVerificationStatus: "",
+        createdBy:"",
+        createDate:"",
+        updatedBy:"",
+        updateDate:"",
+        imageFront: null,
+        imageFrontType:"",
+        selectFrontFileValidation: false,
+        imageBack: null,
+        imageBackType:"",
+        selectBackFileValidation: false,
+     }
+    render() { 
+        return (  );
+    }
+}
+ 
+export default UserDashboard;

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.css';
-import Login from './Component/User/login';
+import SuperLogin from "./Component/SuperAdmin/superLogin";
+import CreateUser  from "./Component/SuperAdmin/createUser";
 
 
 class App extends Component {
@@ -14,7 +15,8 @@ class App extends Component {
       
       <div className= "container">
       <Switch>
-           <Route exact path="/login" component={Login}/>
+           <Route exact path="/" component={SuperLogin}/>
+           <Route exact path="/create-user" component={CreateUser}/>
            </Switch>
         </div>
       </div>
