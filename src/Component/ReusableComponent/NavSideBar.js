@@ -65,22 +65,10 @@ class navSideBar extends Component {
                 <div className="row ">
 
 
-                    
+
 
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
          );
     }

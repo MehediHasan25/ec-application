@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.css';
 import SuperLogin from "./Component/SuperAdmin/superLogin";
 import CreateUser  from "./Component/SuperAdmin/createUser";
+import UpdateUserSearch from './Component/SuperAdmin/updateUserSearch';
 
 
 class App extends Component {
@@ -13,12 +14,13 @@ class App extends Component {
       <div className="App" 
       style={{backgroundColor:"#fcfcfc", marginBottom:"30px"}}>
       
-      <div className= "container">
+      
       <Switch>
            <Route exact path="/" component={SuperLogin}/>
            <Route exact path="/create-user" component={CreateUser}/>
+           <Route exact path="/get-user" component={UpdateUserSearch}/>
            </Switch>
-        </div>
+        
       </div>
       </Router>
     );

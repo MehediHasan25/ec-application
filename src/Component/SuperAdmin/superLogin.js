@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import {Link} from "react-router-dom";
+import axios from 'axios';
+import { adminlogin } from './../Url/Admin';
+import cookie from "../Utils/cookie";
 
 class superLogin extends Component {
     state = { 
@@ -17,9 +20,47 @@ class superLogin extends Component {
 
         const {username, password} = this.state;
 
-        console.log(username);
-        console.log(password);
-        this.props.history.replace('/create-user');
+        
+        const obj = {
+            username,
+            password
+        }
+
+        axios.post(adminlogin, obj)
+        .then(res =>{
+            let userStatus = res.data.userStatus;
+            let userType = res.data.userType;
+            let token = res.headers['x-auth-token'];
+            cookie.setCookie('x-auth-token', token , 120);
+            cookie.setCookie('userStatus', userStatus, 120);
+            cookie.setCookie('userType', userType, 120);
+            this.props.history.replace('/create-user');
+
+        })
+        .catch(err=> {
+            if (err.response) {
+                if (err.response.status === 400 || err.response.status === 401) {
+                    console.log(err.response.data);
+                    alert(err.response.data.message);
+                   
+                }
+                else if (err.response.status === 404) {
+                    alert("Not Found");
+                }
+                else if (err.response.status === 500) {
+                    alert(err.response.data.message);
+                }
+            }
+            else if(err.request){
+                console.log(err.request);
+                alert("Error Connectiong");
+            }
+            else{
+                console.log("Error", err.message);
+                alert(err.message);
+            }
+        });
+
     }
 
 
@@ -49,7 +90,7 @@ class superLogin extends Component {
                     </div>
                 </nav>
 
-              
+              <br/> <br/>
                 <header id="header">
                     <div className="container">
                         <div className="row">
