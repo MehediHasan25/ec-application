@@ -1,52 +1,25 @@
 import React, { Component } from "react";
-import "../CSS/superSideBar.css";
-import { Link } from "react-router-dom";
-import cookie from "../Utils/cookie";
 import axios from "axios";
-import { getUserByUsername } from "./../Url/Admin";
-import UpdateUserForm from "./updateUserForm";
+import { getallnormaluser } from "./../Url/Admin";
+import cookie from "../Utils/cookie";
+import "../CSS/table.css";
+import { Link } from "react-router-dom";
 
-class updateUserSearch extends Component {
+class GetAll extends Component {
   state = {
-    username: "",
-    _id: "",
-    userNameProps: "",
-    userType: "",
-    userStatus: "",
-    updatedBy: "",
-    updateDate: "",
-    mobile: "",
-    email: "",
-    createdBy: "",
-    createDate: "",
-    isShow: false
+    data: []
   };
 
-  onSubmit = e => {
-    e.preventDefault();
-    const { username } = this.state;
+  componentDidMount() {
     const config = {
       headers: {
         "x-auth-token": cookie.getCookie("x-auth-token")
       }
     };
-
     axios
-      .get(getUserByUsername + username, config)
+      .get(getallnormaluser, config)
       .then(res => {
-        console.log(res.data);
-        this.setState({
-          _id: res.data._id,
-          userNameProps: res.data.username,
-          userType: res.data.userType,
-          userStatus: res.data.userStatus,
-          updatedBy: res.data.updatedBy,
-          updateDate: res.data.updateDate,
-          mobile: res.data.mobile,
-          email: res.data.email,
-          createdBy: res.data.createdBy,
-          createDate: res.data.createDate,          
-        });
+        this.setState({ data: res.data });
       })
       .catch(err => {
         if (err.response) {
@@ -66,69 +39,39 @@ class updateUserSearch extends Component {
           alert(err.message);
         }
       });
-      this.setState({isShow:true});
-  };
+  }
 
-  onChangeUsername = e => this.setState({ username: e.target.value });
+  renderTableData() {
+    return this.state.data.map((data, index) => {
+      const {
+        _id,
+        username,
+        userType,
+        userStatus,
+        mobile,
+        email,
+        createDate,
+        createdBy,
+        updatedBy,
+        updateDate
+      } = data; //destructuring
+      return (
+        <tr key={_id}>
+          <td>{username}</td>
+          <td>{mobile}</td>
+          <td>{email}</td>
+          <td>{userType}</td>
+          <td>{userStatus}</td>
+          <td>{createDate}</td>
+          <td>{createdBy}</td>
+          <td>{updateDate}</td>
+          <td>{updatedBy}</td>
+        </tr>
+      );
+    });
+  }
 
   render() {
-    const searchData = (
-      <div className="container" style={{ backgroundColor: "#f7f7f7" }}>
-        <div
-          className="d-flex align-items-center card border-light mb-3"
-          style={{ backgroundColor: "#f7f7f7" }}
-        >
-          <div
-            className="col-sm-5 shadow p-3 mb-2"
-            style={{
-              backgroundColor: "#8f8e8e",
-              color: "#fff",
-              textAlign: "center",
-              marginTop: "15px"
-            }}
-          >
-            <i className="fas fa-certificate" />
-            &nbsp;Search User
-          </div>
-          <div className="card-body col-sm-5">
-            <form onSubmit={this.onSubmit}>
-              <div className="form-group">
-                <input
-                  type="text"
-                  onChange={this.onChangeUsername}
-                  className="form-control"
-                  id="name"
-                  placeholder="UserName"
-                />
-              </div>
-
-              <br />
-
-              {/* <div className="form-group">
-                            <label htmlFor="exampleInputFile">Provide NID Image</label>
-                            <input type="file" className="form-control-file" id="exampleInputFile" aria-describedby="fileHelp"></input>
-                            <br />
-
-                        </div> */}
-
-              <button
-                type="submit"
-                className="btn shadow "
-                style={{
-                  backgroundColor: "#3ed6a6",
-                  color: "#fff",
-                  float: "right"
-                }}
-              >
-                <i className="fas fa-check-circle" />
-                &nbsp; Search
-              </button>
-              <br />
-            </form>
-          </div>
-        </div>
-      </div>
-    );
     return (
       <div>
         <nav
@@ -238,28 +181,27 @@ class updateUserSearch extends Component {
           </Link>
         </div>
         <br />
-        <br />
-        <br />
-        <br />
         <div className="content">
           <div className="row ">
             {/* Update user Search component ////////////////////////////////////////////////////////////*/}
-            {this.state.isShow ? (
-             <UpdateUserForm
-             id={this.state._id}
-             name={this.state.userNameProps}
-             mobile={this.state.mobile}
-             email={this.state.email}
-             userStatus={this.state.userStatus}
-             userType={this.state.userType}
-             createDate={this.state.createDate}
-             createdBy={this.state.createdBy}
-             updateDate={this.state.updateDate}
-             updatedBy={this.state.updatedBy}
-           />
-            ) : (
-              searchData
-            )}
+
+            <h1>All User</h1>
+            <table id="data">
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>mobile</th>
+                  <th>email</th>
+                  <th>userType</th>
+                  <th>userStatus</th>
+                  <th>createDate</th>
+                  <th>createdBy</th>
+                  <th>updateDate</th>
+                  <th>updatedBy</th>
+                </tr>
+              </thead>
+              <tbody>{this.renderTableData()}</tbody>
+            </table>
 
             {/* Update user Search component ////////////////////////////////////////////////////////////*/}
           </div>
@@ -269,4 +211,4 @@ class updateUserSearch extends Component {
   }
 }
 
-export default updateUserSearch;
+export default GetAll;
