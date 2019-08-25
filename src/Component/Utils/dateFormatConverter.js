@@ -1,12 +1,15 @@
-var fullMonthsName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+//var fullMonthsName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 var shortMonthsName = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 
 function getNidFormat(yyyy_mm_dd) {
     let date = yyyy_mm_dd.split('-');
     let year = date[0], month = date[1], day = date[2];
+    //let day1 = day.split(':');
+    let day2= day[0]+day[1];
+  //  console.log(day2);
     let monthStr = shortMonthsName[parseInt(month - 1)];
-    let formattedDate = day.toString() + " " + monthStr + " " + year.toString();
+    let formattedDate = day2.toString() + " " + monthStr + " " + year.toString();
     return formattedDate;
 }
 

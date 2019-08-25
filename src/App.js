@@ -3,10 +3,11 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import SuperLogin from "./Component/SuperAdmin/superLogin";
 import CreateUser from "./Component/SuperAdmin/createUser";
-import UpdateUserSearch from "./Component/SuperAdmin/updateUserSearch";
-import UpdateUserForm from "./Component/SuperAdmin/updateUserForm";
+//import UpdateUserSearch from "./Component/SuperAdmin/updateUserSearch";
+//import UpdateUserForm from "./Component/SuperAdmin/updateUserForm";
 import Dashboard from "./Component/SuperAdmin/dashboard";
 import GetAll from "./Component/SuperAdmin/getAll";
+import UpdateUser from "./Component/SuperAdmin/UpdateUser";
 
 class App extends Component {
   state = {};
@@ -20,8 +21,8 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={SuperLogin} />
             <Route exact path="/create-user" component={CreateUser} />
-            <Route exact path="/get-user" component={UpdateUserSearch} />
-            <Route exact path="/update-user" component={UpdateUserForm} />
+            <Route exact path="/get-user" component={UpdateUser} />
+            {/* <Route exact path="/update-user" component={UpdateUserForm} /> */}
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/get-all" component={GetAll} />
           </Switch>

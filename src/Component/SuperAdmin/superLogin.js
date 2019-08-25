@@ -34,6 +34,7 @@ class superLogin extends Component {
             cookie.setCookie('x-auth-token', token , 120);
             cookie.setCookie('userStatus', userStatus, 120);
             cookie.setCookie('userType', userType, 120);
+            cookie.setCookie('username', username,120);
             this.props.history.replace('/create-user');
 
         })
@@ -75,7 +76,7 @@ class superLogin extends Component {
         return (
             <div>
                 <nav className="navbar fixed-top navbar-expand-md navbar-light shadow" style={{ backgroundColor: "#3ed6a6" }}>
-                    <div className="container">
+                    <div className="container-fluid">
                         <div className="navbar-header">
                             <button type="button" className="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                                 <span className="navbar-toggler-icon"></span>

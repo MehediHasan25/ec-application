@@ -4,6 +4,7 @@ import { getallnormaluser } from "./../Url/Admin";
 import cookie from "../Utils/cookie";
 import "../CSS/table.css";
 import { Link } from "react-router-dom";
+//import dateFormatConverter from '../Utils/dateFormatConverter';
 
 class GetAll extends Component {
   state = {
@@ -19,6 +20,10 @@ class GetAll extends Component {
     axios
       .get(getallnormaluser, config)
       .then(res => {
+        console.log(res);
+        // console.log(res.data[0].createDate);
+        // const nidFormat= dateFormatConverter.getNidFormat(res.data[0].createDate);
+        // console.log(nidFormat);
         this.setState({ data: res.data });
       })
       .catch(err => {
@@ -41,8 +46,19 @@ class GetAll extends Component {
       });
   }
 
+
+  logout = e =>{
+    cookie.setCookie('x-auth-token', "", -1);
+    cookie.setCookie('userStatus', "", -1);
+    cookie.setCookie('userType', "", -1);
+    cookie.setCookie('username', "", -1);       
+}
+
   renderTableData() {
     return this.state.data.map((data, index) => {
+      // console.log(data.createDate);
+      //  const nidFormat= dateFormatConverter.getNidFormat(data.createDate);
+      // console.log(nidFormat);
       const {
         _id,
         username,
@@ -55,6 +71,7 @@ class GetAll extends Component {
         updatedBy,
         updateDate
       } = data; //destructuring
+    
       return (
         <tr key={_id}>
           <td>{username}</td>
@@ -62,9 +79,9 @@ class GetAll extends Component {
           <td>{email}</td>
           <td>{userType}</td>
           <td>{userStatus}</td>
-          <td>{createDate}</td>
+          <td>{new Date(createDate).toLocaleDateString() + " - " + new Date(createDate).toLocaleTimeString()}</td>
           <td>{createdBy}</td>
-          <td>{updateDate}</td>
+          <td>{new Date(updateDate).toLocaleDateString() + " - " + new Date(updateDate).toLocaleTimeString()}</td>
           <td>{updatedBy}</td>
         </tr>
       );
@@ -72,13 +89,14 @@ class GetAll extends Component {
   }
 
   render() {
+    const cookieName = cookie.getCookie('username');
     return (
       <div>
         <nav
           className="navbar fixed-top navbar-expand-md navbar-light shadow"
           style={{ backgroundColor: "#3ed6a6" }}
         >
-          <div className="container">
+          <div className="container-fluid">
             <div className="navbar-header">
               <button
                 type="button"
@@ -135,12 +153,13 @@ class GetAll extends Component {
                   style={{ color: "#ffffff", textDecoration: "none" }}
                 >
                   <i className="fas fa-user" />
-                  &nbsp; Welcome, Demo
+                  &nbsp; Welcome, {cookieName}
                 </Link>
                 &nbsp;&nbsp;&nbsp;
                 <Link
-                  to="#"
+                  to="/"
                   className="nav-item nav-a"
+                  onClick={this.logout}
                   style={{ color: "#ffffff", textDecoration: "none" }}
                 >
                   <i className="fas fa-sign-out-alt" />
@@ -152,21 +171,21 @@ class GetAll extends Component {
         </nav>
 
         <div className="sidebar shadow" style={{ backgroundColor: "#8f8e8e" }}>
-          <Link className="active" to="#home">
+          <Link className="active" to="/dashboard">
             <i className="fas fa-home" />
             &nbsp;&nbsp;Home
           </Link>
 
-          <Link to="#news">
+          <Link to="/create-user">
             <i className="fas fa-newspaper" />
             &nbsp;&nbsp;Create User{" "}
           </Link>
 
-          <Link to="/dashboard">
+          <Link to="get-user">
             <i className="fas fa-id-badge" />
-            &nbsp;&nbsp;Dashboard
+            &nbsp;&nbsp;Update User
           </Link>
-          <Link to="#about">
+          <Link to="get-all">
             <i className="fas fa-eject" />
             &nbsp;&nbsp;All User
           </Link>
@@ -182,11 +201,11 @@ class GetAll extends Component {
         </div>
         <br />
         <div className="content">
-          <div className="row ">
+          <div className="row text-center">
             {/* Update user Search component ////////////////////////////////////////////////////////////*/}
 
-            <h1>All User</h1>
-            <table id="data">
+            <h1 className="">All User</h1>
+            <table id="data" className="">
               <thead>
                 <tr>
                   <th>Username</th>

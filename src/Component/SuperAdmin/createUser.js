@@ -78,6 +78,13 @@ class createUser extends Component {
       });
   };
 
+  logout = e =>{
+    cookie.setCookie('x-auth-token', "", -1);
+    cookie.setCookie('userStatus', "", -1);
+    cookie.setCookie('userType', "", -1);
+    cookie.setCookie('username', "", -1);       
+}
+
   onChangeUsername = e => this.setState({ username: e.target.value });
   onChangePassword = e => this.setState({ password: e.target.value });
   onChangeEmail = e => this.setState({ email: e.target.value });
@@ -86,13 +93,14 @@ class createUser extends Component {
   onChangeUserType = e => this.setState({ userType: e.target.value });
 
   render() {
+    const cookieName = cookie.getCookie('username');
     return (
       <div>
         <nav
           className="navbar fixed-top navbar-expand-md navbar-light shadow"
           style={{ backgroundColor: "#3ed6a6" }}
         >
-          <div className="container">
+          <div className="container-fluid">
             <div className="navbar-header">
               <button
                 type="button"
@@ -149,12 +157,13 @@ class createUser extends Component {
                   style={{ color: "#ffffff", textDecoration: "none" }}
                 >
                   <i className="fas fa-user" />
-                  &nbsp; Welcome, Demo
+                  &nbsp; Welcome, {cookieName}
                 </Link>
                 &nbsp;&nbsp;&nbsp;
                 <Link
-                  to="#"
+                  to="/"
                   className="nav-item nav-a"
+                  onClick={this.logout}
                   style={{ color: "#ffffff", textDecoration: "none" }}
                 >
                   <i className="fas fa-sign-out-alt" />
@@ -166,21 +175,21 @@ class createUser extends Component {
         </nav>
 
         <div className="sidebar shadow" style={{ backgroundColor: "#8f8e8e" }}>
-          <Link className="active" to="#home">
+          <Link className="active" to="/dashboard">
             <i className="fas fa-home" />
             &nbsp;&nbsp;Home
           </Link>
 
-          <Link to="#news">
+          <Link to="/create-user">
             <i className="fas fa-newspaper" />
             &nbsp;&nbsp;Create User{" "}
           </Link>
 
-          <Link to="#contact">
+          <Link to="get-user">
             <i className="fas fa-id-badge" />
             &nbsp;&nbsp;Update User
           </Link>
-          <Link to="#about">
+          <Link to="get-all">
             <i className="fas fa-eject" />
             &nbsp;&nbsp;All User
           </Link>
