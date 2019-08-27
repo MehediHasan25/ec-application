@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import cookie from "../Utils/cookie";
+import { Link, Redirect } from "react-router-dom";
+//import cookie from "../Utils/cookie";
 import { createuser } from "../Url/Admin";
 import axios from "axios";
 import "../CSS/superSideBar.css";
+import { checkValidation } from './../Utils/routeControl';
 
 class createUser extends Component {
   state = {
@@ -21,6 +22,10 @@ class createUser extends Component {
     userTypeValidation: false
   };
 
+  UNSAFE_componentWillMount() {
+    document.title = 'Create User';
+}
+
   onSubmit = e => {
     e.preventDefault();
 
@@ -35,7 +40,7 @@ class createUser extends Component {
 
     const config = {
       headers: {
-        "x-auth-token": cookie.getCookie("x-auth-token")
+        "x-auth-token": sessionStorage.getItem('x-auth-token')
       }
     };
 
@@ -53,9 +58,8 @@ class createUser extends Component {
       .then(res => {
         if (res.data.userId !== null) {
           alert("User created Successfully");
-        } 
-        else {
-            alert("Something Went Wrong");
+        } else {
+          alert("Something Went Wrong");
         }
       })
       .catch(err => {
@@ -76,14 +80,20 @@ class createUser extends Component {
           alert(err.message);
         }
       });
+
+    this.setState({
+      username:'',
+      password:'',
+      email:'',
+      mobile:'',
+      userStatus:'',
+      userType:''
+    });
   };
 
-  logout = e =>{
-    cookie.setCookie('x-auth-token', "", -1);
-    cookie.setCookie('userStatus', "", -1);
-    cookie.setCookie('userType', "", -1);
-    cookie.setCookie('username', "", -1);       
-}
+  logout = e => {
+    sessionStorage.clear(); 
+  };
 
   onChangeUsername = e => this.setState({ username: e.target.value });
   onChangePassword = e => this.setState({ password: e.target.value });
@@ -93,7 +103,11 @@ class createUser extends Component {
   onChangeUserType = e => this.setState({ userType: e.target.value });
 
   render() {
-    const cookieName = cookie.getCookie('username');
+    const sessionName = sessionStorage.getItem('username');
+
+    let cv = checkValidation(sessionStorage.getItem('x-auth-token'), sessionStorage.getItem('userStatus'));
+    if(cv !== null) return <Redirect to="/"/>
+    
     return (
       <div>
         <nav
@@ -121,7 +135,7 @@ class createUser extends Component {
               &nbsp;&nbsp;&nbsp;
             </div>
             <div className="collapse navbar-collapse" id="navbarCollapse">
-              <div className="navbar-nav">
+              {/* <div className="navbar-nav">
                 <Link
                   to="#"
                   className="nav-item nav-a"
@@ -149,7 +163,7 @@ class createUser extends Component {
                   &nbsp; Messages
                 </Link>
                 &nbsp;&nbsp;&nbsp;
-              </div>
+              </div> */}
               <div className="navbar-nav ml-auto">
                 <Link
                   to="#"
@@ -157,7 +171,7 @@ class createUser extends Component {
                   style={{ color: "#ffffff", textDecoration: "none" }}
                 >
                   <i className="fas fa-user" />
-                  &nbsp; Welcome, {cookieName}
+                  &nbsp; Welcome, {sessionName}
                 </Link>
                 &nbsp;&nbsp;&nbsp;
                 <Link
@@ -193,15 +207,7 @@ class createUser extends Component {
             <i className="fas fa-eject" />
             &nbsp;&nbsp;All User
           </Link>
-          <Link
-            to="#"
-            className="nav-item nav-a"
-            style={{ color: "#ffffff" }}
-            tabIndex="-1"
-          >
-            <i className="fab fa-readme" />
-            &nbsp; Reports
-          </Link>
+          
         </div>
 
         <div className="content">
@@ -232,6 +238,7 @@ class createUser extends Component {
                         type="text"
                         onChange={this.onChangeUsername}
                         className="form-control"
+                        value={this.state.username}
                         id="name"
                         placeholder="UserName"
                       />
@@ -242,6 +249,7 @@ class createUser extends Component {
                         type="password"
                         onChange={this.onChangePassword}
                         className="form-control"
+                        value={this.state.password}
                         id="pass"
                         placeholder="password"
                       />
@@ -252,6 +260,7 @@ class createUser extends Component {
                         type="text"
                         onChange={this.onChangeMobile}
                         className="form-control"
+                        value={this.state.mobile}
                         id="mobile"
                         placeholder="Mobile Number"
                       />
@@ -261,6 +270,7 @@ class createUser extends Component {
                         type="email"
                         onChange={this.onChangeEmail}
                         className="form-control"
+                        value={this.state.email}
                         id="email"
                         placeholder="Email"
                       />
@@ -270,6 +280,7 @@ class createUser extends Component {
                       <select
                         className="custom-select"
                         onChange={this.onChangeUserStatus}
+                        value={this.state.userStatus}
                       >
                         <option value="">User Status</option>
                         <option value="active">Active</option>
@@ -282,6 +293,7 @@ class createUser extends Component {
                       <select
                         className="custom-select"
                         onChange={this.onChangeUserType}
+                        value={this.state.userType}
                       >
                         <option value="">User Type</option>
                         <option value="admin">Admin</option>

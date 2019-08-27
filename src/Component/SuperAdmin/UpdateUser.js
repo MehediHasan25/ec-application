@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import cookie from "../Utils/cookie";
+//import cookie from "../Utils/cookie";
 import axios from "axios";
 import { getUserByUsername } from "./../Url/Admin";
 import { updateuser } from "./../Url/Admin";
 import "../CSS/superSideBar.css";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { checkValidation } from "./../Utils/routeControl";
 
 class UpdateUser extends Component {
   state = {
@@ -22,6 +23,10 @@ class UpdateUser extends Component {
     isShow: false
   };
 
+  UNSAFE_componentWillMount() {
+    document.title = 'Update User';
+}
+
   onSubmit = e => {
     e.preventDefault();
     //  const {username} = this.state;
@@ -30,7 +35,7 @@ class UpdateUser extends Component {
     const { username } = this.state;
     const config = {
       headers: {
-        "x-auth-token": cookie.getCookie("x-auth-token")
+        "x-auth-token": sessionStorage.getItem('x-auth-token')
       }
     };
 
@@ -50,7 +55,7 @@ class UpdateUser extends Component {
           createdBy: res.data.createdBy,
           createDate: res.data.createDate
         });
-        this.setState({ isShow: true });
+        this.setState({ isShow: true});
       })
       .catch(err => {
         if (err.response) {
@@ -70,13 +75,12 @@ class UpdateUser extends Component {
           alert(err.message);
         }
       });
+
+      
   };
 
   logout = e => {
-    cookie.setCookie("x-auth-token", "", -1);
-    cookie.setCookie("userStatus", "", -1);
-    cookie.setCookie("userType", "", -1);
-    cookie.setCookie("username", "", -1);
+    sessionStorage.clear(); 
   }
 
   onSubmitUpdate = e => {
@@ -103,7 +107,7 @@ class UpdateUser extends Component {
 
     const config = {
       headers: {
-        "x-auth-token": cookie.getCookie("x-auth-token")
+        "x-auth-token": sessionStorage.getItem('x-auth-token')
       }
     };
 
@@ -145,6 +149,7 @@ class UpdateUser extends Component {
           alert(err.message);
         }
       });
+     
   };
 
   onChangeUsername = e => this.setState({ username: e.target.value });
@@ -155,7 +160,13 @@ class UpdateUser extends Component {
   onChangemobile = e => this.setState({ mobile: e.target.value });
 
   render() {
-    const cookieName = cookie.getCookie("username");
+    const sessionName = sessionStorage.getItem('username');
+    
+    let cv = checkValidation(
+      sessionStorage.getItem("x-auth-token"),
+      sessionStorage.getItem("userStatus")
+    );
+    if (cv !== null) return <Redirect to="/" />;
     ///Search Data////
     const searchData = (
       <div className="container" style={{ backgroundColor: "#f7f7f7" }}>
@@ -182,6 +193,7 @@ class UpdateUser extends Component {
                   type="text"
                   onChange={this.onChangeUsername}
                   className="form-control"
+                  value={this.state.username}
                   id="name"
                   placeholder="UserName"
                 />
@@ -243,6 +255,7 @@ class UpdateUser extends Component {
                   onChange={this.onChangeUsername}
                   defaultValue={this.state.username}
                   className="form-control"
+                  value={this.state.username}
                   id="name"
                   placeholder="User Name"
                 />
@@ -430,7 +443,7 @@ class UpdateUser extends Component {
               &nbsp;&nbsp;&nbsp;
             </div>
             <div className="collapse navbar-collapse" id="navbarCollapse">
-              <div className="navbar-nav">
+              {/* <div className="navbar-nav">
                 <Link
                   to="#"
                   className="nav-item nav-a"
@@ -458,7 +471,7 @@ class UpdateUser extends Component {
                   &nbsp; Messages
                 </Link>
                 &nbsp;&nbsp;&nbsp;
-              </div>
+              </div> */}
               <div className="navbar-nav ml-auto">
                 <Link
                   to="#"
@@ -466,7 +479,7 @@ class UpdateUser extends Component {
                   style={{ color: "#ffffff", textDecoration: "none" }}
                 >
                   <i className="fas fa-user" />
-                  &nbsp; Welcome, {cookieName}
+                  &nbsp; Welcome, {sessionName}
                 </Link>
                 &nbsp;&nbsp;&nbsp;
                 <Link
@@ -502,15 +515,7 @@ class UpdateUser extends Component {
             <i className="fas fa-eject" />
             &nbsp;&nbsp;All User
           </Link>
-          <Link
-            to="#"
-            className="nav-item nav-a"
-            style={{ color: "#ffffff" }}
-            tabIndex="-1"
-          >
-            <i className="fab fa-readme" />
-            &nbsp; Reports
-          </Link>
+        
         </div>
         <br />
         <br />

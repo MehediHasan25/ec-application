@@ -1,20 +1,28 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { getallnormaluser } from "./../Url/Admin";
-import cookie from "../Utils/cookie";
+//import cookie from "../Utils/cookie";
 import "../CSS/table.css";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 //import dateFormatConverter from '../Utils/dateFormatConverter';
+import { checkValidation } from "./../Utils/routeControl";
 
 class GetAll extends Component {
   state = {
     data: []
   };
 
+  UNSAFE_componentWillMount() {
+    document.title = "All User";
+    
+
+  }
+
   componentDidMount() {
+    console.log("mehedi");
     const config = {
       headers: {
-        "x-auth-token": cookie.getCookie("x-auth-token")
+        "x-auth-token": sessionStorage.getItem("x-auth-token")
       }
     };
     axios
@@ -46,13 +54,9 @@ class GetAll extends Component {
       });
   }
 
-
-  logout = e =>{
-    cookie.setCookie('x-auth-token', "", -1);
-    cookie.setCookie('userStatus', "", -1);
-    cookie.setCookie('userType', "", -1);
-    cookie.setCookie('username', "", -1);       
-}
+  logout = e => {
+    sessionStorage.clear();
+  };
 
   renderTableData() {
     return this.state.data.map((data, index) => {
@@ -71,7 +75,7 @@ class GetAll extends Component {
         updatedBy,
         updateDate
       } = data; //destructuring
-    
+
       return (
         <tr key={_id}>
           <td>{username}</td>
@@ -79,9 +83,17 @@ class GetAll extends Component {
           <td>{email}</td>
           <td>{userType}</td>
           <td>{userStatus}</td>
-          <td>{new Date(createDate).toLocaleDateString() + " - " + new Date(createDate).toLocaleTimeString()}</td>
+          <td>
+            {new Date(createDate).toLocaleDateString() +
+              " - " +
+              new Date(createDate).toLocaleTimeString()}
+          </td>
           <td>{createdBy}</td>
-          <td>{new Date(updateDate).toLocaleDateString() + " - " + new Date(updateDate).toLocaleTimeString()}</td>
+          <td>
+            {new Date(updateDate).toLocaleDateString() +
+              " - " +
+              new Date(updateDate).toLocaleTimeString()}
+          </td>
           <td>{updatedBy}</td>
         </tr>
       );
@@ -89,7 +101,14 @@ class GetAll extends Component {
   }
 
   render() {
-    const cookieName = cookie.getCookie('username');
+    const sessionName = sessionStorage.getItem("username");
+    let cv = checkValidation(
+      sessionStorage.getItem("x-auth-token"),
+      sessionStorage.getItem("userStatus")
+    );
+    if (cv !== null) return <Redirect to="/" />;
+
+   console.log("hasan");
     return (
       <div>
         <nav
@@ -117,7 +136,7 @@ class GetAll extends Component {
               &nbsp;&nbsp;&nbsp;
             </div>
             <div className="collapse navbar-collapse" id="navbarCollapse">
-              <div className="navbar-nav">
+              {/* <div className="navbar-nav">
                 <Link
                   to="#"
                   className="nav-item nav-a"
@@ -145,7 +164,7 @@ class GetAll extends Component {
                   &nbsp; Messages
                 </Link>
                 &nbsp;&nbsp;&nbsp;
-              </div>
+              </div> */}
               <div className="navbar-nav ml-auto">
                 <Link
                   to="#"
@@ -153,7 +172,7 @@ class GetAll extends Component {
                   style={{ color: "#ffffff", textDecoration: "none" }}
                 >
                   <i className="fas fa-user" />
-                  &nbsp; Welcome, {cookieName}
+                  &nbsp; Welcome, {sessionName}
                 </Link>
                 &nbsp;&nbsp;&nbsp;
                 <Link
@@ -189,22 +208,25 @@ class GetAll extends Component {
             <i className="fas fa-eject" />
             &nbsp;&nbsp;All User
           </Link>
-          <Link
-            to="#"
-            className="nav-item nav-a"
-            style={{ color: "#ffffff" }}
-            tabIndex="-1"
-          >
-            <i className="fab fa-readme" />
-            &nbsp; Reports
-          </Link>
         </div>
         <br />
         <div className="content">
-          <div className="row text-center">
+          <div
+            className="shadow mb-4"
+            style={{
+              backgroundColor: "#fcfcfc",
+              color: "#8f8e8e",
+              textAlign: "center",
+              marginTop: "50px"
+            }}
+          >
+            <h2>
+              <i class="fas fa-users"></i>&nbsp;All User
+            </h2>
+          </div>
+          <div className="row">
             {/* Update user Search component ////////////////////////////////////////////////////////////*/}
 
-            <h1 className="">All User</h1>
             <table id="data" className="">
               <thead>
                 <tr>
