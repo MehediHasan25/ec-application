@@ -125,7 +125,7 @@ class Dashboard extends Component {
         <div className="content">
           <div className="row ">
             {/* start Content///////////////////////////////////////////////////////////// */}
-            <div className="col">
+            {/* <div className="col">
               <div className="jumbotron">
                 <div
                   className="shadow mb-3"
@@ -213,7 +213,8 @@ class Dashboard extends Component {
                   </table>
                 </div>
               </div>
-            </div>
+            </div> */}
+            <h1>Dashboard is Under Construction</h1>
 
             {/* End Content ////////////////////////////////////////////////////////////*/}
           </div>

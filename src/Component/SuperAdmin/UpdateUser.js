@@ -42,7 +42,7 @@ class UpdateUser extends Component {
     axios
       .get(getUserByUsername + username, config)
       .then(res => {
-        console.log(res.data);
+        //console.log(res.data);
         this.setState({
           _id: res.data._id,
           username: res.data.username,
@@ -127,7 +127,7 @@ class UpdateUser extends Component {
     axios
       .put(updateuser, obj, config)
       .then(res => {
-        console.log(res);
+        //console.log(res);
         alert("successful");
         this.setState({ isShow: false });
       })

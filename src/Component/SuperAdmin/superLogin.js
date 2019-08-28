@@ -30,7 +30,7 @@ class superLogin extends Component {
         let userStatus = res.data.userStatus;
         let userType = res.data.userType;
         let token = res.headers["x-auth-token"];
-        if (userStatus === "active") {
+        if (userStatus === "active" && userType ==="admin") {
           sessionStorage.setItem("x-auth-token", token);
           sessionStorage.setItem("userStatus", userStatus);
           sessionStorage.setItem("userType", userType);
@@ -41,7 +41,7 @@ class superLogin extends Component {
           // cookie.setCookie('username', username,120);
           this.props.history.replace("/create-user");
         } else {
-          alert("user inactive");
+          alert("User inactive or Insufficient Previledge");
           this.setState({ username: "", password: "" });
         }
       })
@@ -75,7 +75,7 @@ class superLogin extends Component {
   render() {
 
     if (sessionStorage.getItem("x-auth-token") !== null) {
-        return <Redirect to="/dashboard" />;
+        return <Redirect to="/create-user" />;
     }
 
     return (

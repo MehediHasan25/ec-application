@@ -19,7 +19,9 @@ class GetAll extends Component {
   }
 
   componentDidMount() {
-    console.log("mehedi");
+
+    if(sessionStorage.getItem('x-auth-token')!== null && sessionStorage.getItem('userStatus') === "active"){
+    
     const config = {
       headers: {
         "x-auth-token": sessionStorage.getItem("x-auth-token")
@@ -28,7 +30,7 @@ class GetAll extends Component {
     axios
       .get(getallnormaluser, config)
       .then(res => {
-        console.log(res);
+       // console.log(res);
         // console.log(res.data[0].createDate);
         // const nidFormat= dateFormatConverter.getNidFormat(res.data[0].createDate);
         // console.log(nidFormat);
@@ -52,6 +54,7 @@ class GetAll extends Component {
           alert(err.message);
         }
       });
+    }
   }
 
   logout = e => {
@@ -101,14 +104,16 @@ class GetAll extends Component {
   }
 
   render() {
-    const sessionName = sessionStorage.getItem("username");
+
     let cv = checkValidation(
       sessionStorage.getItem("x-auth-token"),
       sessionStorage.getItem("userStatus")
     );
     if (cv !== null) return <Redirect to="/" />;
+    const sessionName = sessionStorage.getItem("username");
+    
 
-   console.log("hasan");
+   
     return (
       <div>
         <nav
@@ -221,7 +226,7 @@ class GetAll extends Component {
             }}
           >
             <h2>
-              <i class="fas fa-users"></i>&nbsp;All User
+              <i className="fas fa-users"></i>&nbsp;All User
             </h2>
           </div>
           <div className="row">
