@@ -7,11 +7,15 @@ class UpdateUserForm extends Component {
   state = {
     _id: "",
     username: "",
+    usernameValidation: false,
     userType: "",
+    userTypeValidation: false,
     userStatus: "",
+    userStatusValidation: false,
     updatedBy: "",
     updateDate: "",
     mobile: "",
+    mobileValidation: false,
     email: "",
     createdBy: "",
     createDate: ""

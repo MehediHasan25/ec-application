@@ -225,25 +225,25 @@ class GetAll extends Component {
               marginTop: "50px"
             }}
           >
-            <h2>
+            <h4>
               <i className="fas fa-users"></i>&nbsp;All User
-            </h2>
+            </h4>
           </div>
           <div className="row">
             {/* Update user Search component ////////////////////////////////////////////////////////////*/}
 
-            <table id="data" className="">
+            <table id="data" className="" style={{ fontSize: "11pt" }}>
               <thead>
                 <tr>
-                  <th>Username</th>
-                  <th>mobile</th>
-                  <th>email</th>
-                  <th>userType</th>
-                  <th>userStatus</th>
-                  <th>createDate</th>
-                  <th>createdBy</th>
-                  <th>updateDate</th>
-                  <th>updatedBy</th>
+                  <th>Name</th>
+                  <th>Mobile</th>
+                  <th>Email</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th>Create Date</th>
+                  <th>Created By</th>
+                  <th>Update Date</th>
+                  <th>Updated By</th>
                 </tr>
               </thead>
               <tbody>{this.renderTableData()}</tbody>

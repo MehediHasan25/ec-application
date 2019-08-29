@@ -4,7 +4,7 @@ import { Link, Redirect } from "react-router-dom";
 import { createuser } from "../Url/Admin";
 import axios from "axios";
 import "../CSS/superSideBar.css";
-import { checkValidation } from './../Utils/routeControl';
+import { checkValidation } from "./../Utils/routeControl";
 
 class createUser extends Component {
   state = {
@@ -23,8 +23,13 @@ class createUser extends Component {
   };
 
   UNSAFE_componentWillMount() {
-    document.title = 'Create User';
-}
+    document.title = "Create User";
+  }
+
+  // validateEmail(email) {
+  //   var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  //   return re.test(String(email).toLowerCase());
+  // }
 
   onSubmit = e => {
     e.preventDefault();
@@ -38,9 +43,68 @@ class createUser extends Component {
       userType
     } = this.state;
 
+    //// username
+    if (username === "") {
+      this.getUsernameError = alert("User Name is empty");
+      this.setState({ usernameValidation: true });
+      return;
+    }
+    if (username.length < 3 || username.length >= 30) {
+      this.getUsernameError = alert(
+        "User Name must be greater than 3 and less than 30 characters"
+      );
+      this.setState({ usernameValidation: true });
+      return;
+    }
+
+    if (password === "") {
+      this.getPasswordError = alert("Password is empty");
+      this.setState({ passwordValidation: true });
+      return;
+    } 
+    if (password === username) {
+      this.getPasswordError = alert("Password is not allowed same as username");
+      this.setState({ passwordValidation: true });
+      return;
+    }
+    if (password.length < 8) {
+      this.getPasswordError = alert("Password must be 8 characters");
+      this.setState({ passwordValidation: true });
+      return;
+    } 
+    
+
+    if (mobile === "") {
+      this.getMobileError = alert("Mobile Number field is empty");
+      this.setState({ mobileValidation: true });
+      return;
+    } else if (mobile.length < 11) {
+      this.getMobileError = alert("Mobile Number is less  than 11 digits");
+      this.setState({ mobileValidation: true });
+      return;
+    } else if (mobile.length > 11) {
+      this.getMobileError = alert("Mobile Number is greate than 11 digits");
+      this.setState({ mobileValidation: true });
+      return;
+    }
+
+
+    if (userStatus === "") {
+      this.getUserStatusError = alert("Please Select User Status");
+      this.setState({ userStatusValidation: true });
+      return;
+    }
+
+    if (userType === "") {
+      this.getUserTypeError = alert("Please Select User Type");
+      this.setState({ userTypeValidation: true });
+      return;
+    }
+    
+
     const config = {
       headers: {
-        "x-auth-token": sessionStorage.getItem('x-auth-token')
+        "x-auth-token": sessionStorage.getItem("x-auth-token")
       }
     };
 
@@ -82,32 +146,37 @@ class createUser extends Component {
       });
 
     this.setState({
-      username:'',
-      password:'',
-      email:'',
-      mobile:'',
-      userStatus:'',
-      userType:''
+      username: "",
+      password: "",
+      email: "",
+      mobile: "",
+      userStatus: "",
+      userType: ""
     });
   };
 
   logout = e => {
-    sessionStorage.clear(); 
+    sessionStorage.clear();
   };
 
-  onChangeUsername = e => this.setState({ username: e.target.value });
-  onChangePassword = e => this.setState({ password: e.target.value });
+  onChangeUsername = e =>
+    this.setState({ username: e.target.value, usernameValidation: false });
+  onChangePassword = e =>
+    this.setState({ password: e.target.value, passwordValidation: false });
   onChangeEmail = e => this.setState({ email: e.target.value });
   onChangeMobile = e => this.setState({ mobile: e.target.value });
-  onChangeUserStatus = e => this.setState({ userStatus: e.target.value });
-  onChangeUserType = e => this.setState({ userType: e.target.value });
+  onChangeUserStatus = e => this.setState({ userStatus: e.target.value, userStatusValidation: false });
+  onChangeUserType = e => this.setState({ userType: e.target.value, userTypeValidation: false });
 
   render() {
-    const sessionName = sessionStorage.getItem('username');
+    const sessionName = sessionStorage.getItem("username");
 
-    let cv = checkValidation(sessionStorage.getItem('x-auth-token'), sessionStorage.getItem('userStatus'));
-    if(cv !== null) return <Redirect to="/"/>
-    
+    let cv = checkValidation(
+      sessionStorage.getItem("x-auth-token"),
+      sessionStorage.getItem("userStatus")
+    );
+    if (cv !== null) return <Redirect to="/" />;
+
     return (
       <div>
         <nav
@@ -207,7 +276,6 @@ class createUser extends Component {
             <i className="fas fa-eject" />
             &nbsp;&nbsp;All User
           </Link>
-          
         </div>
 
         <div className="content">
@@ -234,6 +302,11 @@ class createUser extends Component {
                 <div className="card-body">
                   <form onSubmit={this.onSubmit}>
                     <div className="form-group">
+                      <i style={{ color: "red", textAlign: "right" }}>
+                        {this.state.usernameValidation === true
+                          ? this.getUsernameError
+                          : ""}
+                      </i>
                       <input
                         type="text"
                         onChange={this.onChangeUsername}
@@ -245,6 +318,11 @@ class createUser extends Component {
                     </div>
 
                     <div className="form-group">
+                      <i style={{ color: "red", textAlign: "right" }}>
+                        {this.state.passwordValidation === true
+                          ? this.getPasswordError
+                          : ""}
+                      </i>
                       <input
                         type="password"
                         onChange={this.onChangePassword}
@@ -256,6 +334,11 @@ class createUser extends Component {
                     </div>
 
                     <div className="form-group">
+                      <i style={{ color: "red", textAlign: "right" }}>
+                        {this.state.mobileValidation === true
+                          ? this.getMobileError
+                          : ""}
+                      </i>
                       <input
                         type="text"
                         onChange={this.onChangeMobile}
@@ -277,6 +360,11 @@ class createUser extends Component {
                     </div>
 
                     <div className="form-group">
+                    <i style={{ color: "red", textAlign: "right" }}>
+                        {this.state.usernameValidation === true
+                          ? this.getUserStatusError
+                          : ""}
+                      </i>
                       <select
                         className="custom-select"
                         onChange={this.onChangeUserStatus}
@@ -290,6 +378,11 @@ class createUser extends Component {
                     </div>
 
                     <div className="form-group">
+                    <i style={{ color: "red", textAlign: "right" }}>
+                        {this.state.userTypeValidation === true
+                          ? this.getUserTypeError
+                          : ""}
+                      </i>
                       <select
                         className="custom-select"
                         onChange={this.onChangeUserType}

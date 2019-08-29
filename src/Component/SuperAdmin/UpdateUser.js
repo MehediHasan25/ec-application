@@ -10,13 +10,17 @@ import { checkValidation } from "./../Utils/routeControl";
 class UpdateUser extends Component {
   state = {
     username: "",
+    usernameValidation: false,
     _id: "",
     userNameUpdate: "",
     userType: "",
+    userTypeValidation: false,
     userStatus: "",
+    userStatusValidation: false,
     updatedBy: "",
     updateDate: "",
     mobile: "",
+    moblieValidation: false,
     email: "",
     createdBy: "",
     createDate: "",
@@ -105,6 +109,46 @@ class UpdateUser extends Component {
       createDate
     } = this.state;
 
+    if (username === "") {
+      this.getUsernameError = alert("User Name is empty");
+      this.setState({ usernameValidation: true });
+      return;
+    }
+    if (username.length < 3 || username.length >= 30) {
+      this.getUsernameError = alert(
+        "User Name must be greater than 3 and less than 30 characters"
+      );
+      this.setState({ usernameValidation: true });
+      return;
+    }
+
+
+    if (mobile === "") {
+      this.getMobileError = alert("Mobile Number field is empty");
+      this.setState({ mobileValidation: true });
+      return;
+    } else if (mobile.length < 11) {
+      this.getMobileError = alert("Mobile Number is less  than 11 digits");
+      this.setState({ mobileValidation: true });
+      return;
+    } else if (mobile.length > 11) {
+      this.getMobileError = alert("Mobile Number is greate than 11 digits");
+      this.setState({ mobileValidation: true });
+      return;
+    }
+
+    if (userStatus === "") {
+      this.getUserStatusError = alert("Please Select User Status");
+      this.setState({ userStatusValidation: true });
+      return;
+    }
+
+    if (userType === "") {
+      this.getUserTypeError = alert("Please Select User Type");
+      this.setState({ userTypeValidation: true });
+      return;
+    }
+
     const config = {
       headers: {
         "x-auth-token": sessionStorage.getItem('x-auth-token')
@@ -127,7 +171,7 @@ class UpdateUser extends Component {
     axios
       .put(updateuser, obj, config)
       .then(res => {
-        //console.log(res);
+       // console.log(res);
         alert("successful");
         this.setState({ isShow: false });
       })
@@ -189,6 +233,7 @@ class UpdateUser extends Component {
           <div className="card-body col-sm-5">
             <form onSubmit={this.onSubmit}>
               <div className="form-group">
+               
                 <input
                   type="text"
                   onChange={this.onChangeUsername}
@@ -250,10 +295,15 @@ class UpdateUser extends Component {
           <div className="card-body">
             <form onSubmit={this.onSubmitUpdate}>
               <div className="form-group">
+              <i style={{ color: "red", textAlign: "right" }}>
+                        {this.state.usernameValidation === true
+                          ? this.getUsernameError
+                          : ""}
+                      </i>
                 <input
                   type="text"
                   onChange={this.onChangeUsername}
-                  defaultValue={this.state.username}
+                 // defaultValue={this.state.username}
                   className="form-control"
                   value={this.state.username}
                   id="name"
@@ -267,6 +317,11 @@ class UpdateUser extends Component {
                             </div> */}
 
               <div className="form-group">
+              <i style={{ color: "red", textAlign: "right" }}>
+                        {this.state.mobileValidation === true
+                          ? this.getMobileError
+                          : ""}
+                      </i>
                 <input
                   type="text"
                   onChange={this.onChangemobile}
@@ -288,6 +343,11 @@ class UpdateUser extends Component {
               </div>
 
               <div className="form-group">
+              <i style={{ color: "red", textAlign: "right" }}>
+                        {this.state.usernameValidation === true
+                          ? this.getUserStatusError
+                          : ""}
+                      </i>
                 <select
                   className="custom-select"
                   onChange={this.onChangeUserStatus}
@@ -301,6 +361,11 @@ class UpdateUser extends Component {
               </div>
 
               <div className="form-group">
+              <i style={{ color: "red", textAlign: "right" }}>
+                        {this.state.userTypeValidation === true
+                          ? this.getUserTypeError
+                          : ""}
+                      </i>
                 <select
                   className="custom-select"
                   onChange={this.onChangeUserType}
